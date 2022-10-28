@@ -26,11 +26,15 @@ public class SocketReceive implements Runnable {
                 return;
             }
             boolean isClosed = socket.isClosed();
+            String hostAddress = socket.getInetAddress().getHostAddress();
             if (isClosed) {
                 log.info("socket检测到关闭了");
+                if (AllClientsMap.contains(hostAddress)) {
+                    AllClientsMap.remove(hostAddress);
+                    AllClientsMap.print();
+                }
                 return;
             }
-            String hostAddress = socket.getInetAddress().getHostAddress();
             try {
                 //建立客户端信息输入流
                 DataInputStream in = new DataInputStream(socket.getInputStream());
